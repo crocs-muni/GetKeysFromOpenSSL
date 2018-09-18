@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSIONS_FOLDER=$1
+VERSIONS_FOLDER=$1 
 VERSION=$2
 BITS=$3
 COUNT=$4
@@ -23,8 +23,10 @@ mkdir $MAINDIR/$VERSION
 tar -xf $VERSIONS_FOLDER/$VERSION.tar.gz -C $MAINDIR/$VERSION --strip-components 1
 cd $MAINDIR
 
+# Note: if configured with "no-asm" (no assembler) option, more versions install successfully,
+# but on the other hand, none of them is able to produce actual keys (mains loop on key generation)  
 cd $VERSION
-if ! ./config --prefix=$INSTALLDIR --openssldir=$OPENSSLDIR &> /dev/null #removed no-asm
+if ! ./config --prefix=$INSTALLDIR --openssldir=$OPENSSLDIR &> /dev/null
 then
 	cd ..
 	rm -r $VERSION
@@ -41,7 +43,9 @@ fi
 cd ..
 rm -r $VERSION
 
+# This needs to be synchronized with Makefile manually
 MAINS=(OpenSSL OpenSSL1 OpenSSL2 OpenSSL3)
+
 for MAIN in ${MAINS[@]}
 do
 	make --quiet "$MAIN" >& /dev/null && timeout $5 ./"$MAIN" -b $3 -c $4

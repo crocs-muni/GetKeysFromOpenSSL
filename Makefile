@@ -1,7 +1,7 @@
 INSTALLDIR = $(shell pwd)/library
 
 LDFLAGS = -I$(INSTALLDIR)/include -L$(INSTALLDIR)/lib -lcrypto -ldl -pthread # removed -static flag
-CFLAGS = -g -Wall -Wextra -Wl,-rpath,/home/roman/Dropbox/uni/RSA/compiling_on_different_openssl_versions/library/lib
+CFLAGS = -g -Wall -Wextra -Wl,-rpath,$(INSTALLDIR)/lib
 CC = gcc
 
 OpenSSL3: OpenSSL3.c
